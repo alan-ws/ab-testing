@@ -13,8 +13,15 @@ const buckets: { [key: number]: string } = {
 };
 
 export async function middleware(req: NextRequest) {
-  // const { pathname } = req.nextUrl;
-  // const url = await get(buckets[whichBucket()]);
-  // return NextResponse.rewrite(new URL(pathname, url));
-  return NextResponse.next();
+  const abUrl = await get(buckets[whichBucket()]);
+  const { host } = req.nextUrl;
+  if (host === abUrl) {
+    return NextResponse.next({ headers: req.headers });
+  }
+  return NextResponse.rewrite(new URL(req.nextUrl.pathname, abUrl), {
+    headers: {
+      "x-vercel-protection-bypass": "12312",
+      ...req.headers,
+    },
+  });
 }
