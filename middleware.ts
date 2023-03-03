@@ -16,5 +16,5 @@ export async function middleware(req: NextRequest) {
   // const { pathname } = req.nextUrl;
   // const url = await get(buckets[whichBucket()]);
   // return NextResponse.rewrite(new URL(pathname, url));
-  return NextResponse.next();
+  return;
 }
